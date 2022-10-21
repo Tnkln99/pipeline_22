@@ -10,5 +10,8 @@ apps = {
     "maya": ["ma", "mb"], "houdini": ["hipnc"], "cache": ["abc"]
 }
 
-global_pattern = '{type}/*/*/{task}/v*/*_{state}.{ext}'
-cache_pattern = '{type}/*/*/{task}/v*/*.{ext}'
+global_pattern_path = '{type}/*/*/{task}/v*/*_{state}.{ext}'
+cache_pattern_path = '{type}/*/*/{task}/v*/*.{ext}'
+
+assets_pattern_lucid = 'assets/{cat}/{name}/{task}/{version}/{name}_{state}.{ext}'
+shots_pattern_lucid = 'shots/{seq}/{shot}/{name}/{version}/{name}_{state}.{ext}'

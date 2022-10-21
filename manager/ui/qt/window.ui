@@ -18,52 +18,62 @@
     <item row="0" column="0">
      <layout class="QVBoxLayout" name="verticalLayout_2">
       <item>
-       <widget class="QListWidget" name="list_widget"/>
-      </item>
-     </layout>
-    </item>
-    <item row="1" column="0">
-     <layout class="QHBoxLayout" name="horizontalLayout_4">
-      <item>
-       <layout class="QVBoxLayout" name="verticalLayout">
-        <item>
-         <layout class="QHBoxLayout" name="horizontalLayout">
-          <item>
-           <widget class="QCheckBox" name="cbx_work">
-            <property name="text">
-             <string>Work</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QCheckBox" name="cbx_publish">
-            <property name="text">
-             <string>Publish</string>
-            </property>
-           </widget>
-          </item>
-         </layout>
-        </item>
-        <item>
-         <layout class="QHBoxLayout" name="apps_layout"/>
-        </item>
-       </layout>
+       <widget class="QTableWidget" name="list_view">
+        <column>
+         <property name="text">
+          <string>Type</string>
+         </property>
+        </column>
+        <column>
+         <property name="text">
+          <string>Task</string>
+         </property>
+        </column>
+        <column>
+         <property name="text">
+          <string>State</string>
+         </property>
+        </column>
+        <column>
+         <property name="text">
+          <string>Ext</string>
+         </property>
+        </column>
+       </widget>
       </item>
       <item>
        <layout class="QHBoxLayout" name="horizontalLayout_2">
         <item>
-         <widget class="QPushButton" name="btn_find">
-          <property name="text">
-           <string>Find</string>
-          </property>
-         </widget>
+         <layout class="QHBoxLayout" name="horizontalLayout_4">
+          <item>
+           <layout class="QVBoxLayout" name="verticalLayout">
+            <item>
+             <layout class="QHBoxLayout" name="horizontalLayout">
+              <item>
+               <widget class="QCheckBox" name="cbx_work">
+                <property name="text">
+                 <string>Work</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QCheckBox" name="cbx_publish">
+                <property name="text">
+                 <string>Publish</string>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </item>
+            <item>
+             <layout class="QHBoxLayout" name="apps_layout"/>
+            </item>
+           </layout>
+          </item>
+         </layout>
         </item>
         <item>
-         <widget class="QPushButton" name="btn_build">
-          <property name="text">
-           <string>I do nothing</string>
-          </property>
-         </widget>
+         <layout class="QVBoxLayout" name="button_layout"/>
         </item>
        </layout>
       </item>
@@ -80,6 +90,12 @@
      <height>21</height>
     </rect>
    </property>
+   <widget class="QMenu" name="menuOlalaaaaa">
+    <property name="title">
+     <string>Olalaaaaa</string>
+    </property>
+   </widget>
+   <addaction name="menuOlalaaaaa"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
  </widget>
