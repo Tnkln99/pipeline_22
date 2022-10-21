@@ -21,22 +21,17 @@
        <widget class="QTableWidget" name="list_view">
         <column>
          <property name="text">
-          <string>Type</string>
-         </property>
-        </column>
-        <column>
-         <property name="text">
-          <string>Task</string>
-         </property>
-        </column>
-        <column>
-         <property name="text">
           <string>State</string>
          </property>
         </column>
         <column>
          <property name="text">
           <string>Ext</string>
+         </property>
+        </column>
+        <column>
+         <property name="text">
+          <string>Full Path</string>
          </property>
         </column>
        </widget>
@@ -48,7 +43,7 @@
           <item>
            <layout class="QVBoxLayout" name="verticalLayout">
             <item>
-             <layout class="QHBoxLayout" name="horizontalLayout">
+             <layout class="QHBoxLayout" name="state_layout">
               <item>
                <widget class="QCheckBox" name="cbx_work">
                 <property name="text">
@@ -90,12 +85,6 @@
      <height>21</height>
     </rect>
    </property>
-   <widget class="QMenu" name="menuOlalaaaaa">
-    <property name="title">
-     <string>Olalaaaaa</string>
-    </property>
-   </widget>
-   <addaction name="menuOlalaaaaa"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
  </widget>

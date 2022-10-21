@@ -1,7 +1,7 @@
 from functools import partial
 
 from PySide2 import QtGui
-from PySide2.QtWidgets import QListWidget, QListWidgetItem, QAbstractItemView, QCheckBox, QPushButton, QTableWidgetItem
+from PySide2.QtWidgets import QCheckBox, QPushButton, QTableWidgetItem, QHeaderView
 
 import Qt
 from Qt.QtWidgets import QMainWindow
@@ -10,6 +10,7 @@ from Qt import QtWidgets, QtCompat
 
 from manager.conf import ui_path, apps
 from manager.core.fm.file_search import get_all_filtered
+from manager.core.resolver import get_entities, entity_to_path
 from manager.engine import *
 from manager.engine.base_engine import BaseEngine
 
@@ -22,7 +23,7 @@ class Window(QMainWindow):
         self.apps_cbx = []
         self.buttons = []
 
-        self.projects = get_all_filtered("mini_film_1")
+        self.projects_entities = get_entities("mini_film_1")
 
         super(Window, self).__init__()
         QtCompat.loadUi(str(ui_path), self)
@@ -39,11 +40,13 @@ class Window(QMainWindow):
 
         self.connect()
 
-        cpt = 0
-        for i in self.projects:
-            self.list_view.insertRow(cpt)
-            self.list_view.setItem(0, cpt, QTableWidgetItem(str(i)))
-            cpt = cpt + 1
+        self.list_view.setRowCount(len(self.projects_entities))
+        self.list_view.setColumnCount(4)
+
+        self.load_table()
+
+        self.list_view.horizontalHeader().setSectionResizeMode(
+            QHeaderView.Stretch)
 
     def connect(self):
         self.cbx_publish.stateChanged.connect(self.refresh_filter)
@@ -56,7 +59,7 @@ class Window(QMainWindow):
             cbx.stateChanged.connect(self.refresh_filter)
 
     def refresh_filter(self):
-        self.list_widget.clear()
+        self.list_view.clearContents()
 
         states = [""]
         extensions = []
@@ -74,10 +77,9 @@ class Window(QMainWindow):
             if cbx.objectName() == "cbx_cache" and cbx.isChecked():
                 extensions.extend(apps["cache"])
 
-        self.projects = get_all_filtered("mini_film_1", states=states, extensions=extensions)
+        self.projects_entities = get_entities("mini_film_1", states=states, extensions=extensions)
 
-        for i in self.projects:
-            self.list_widget.addItem(str(i))
+        self.load_table()
 
     def load_buttons(self):
         for i in self.engine.implementations:
@@ -92,6 +94,15 @@ class Window(QMainWindow):
             checkbox.setObjectName("cbx_"+i)
             self.apps_layout.addWidget(checkbox)
             self.apps_cbx.append(checkbox)
+
+    def load_table(self):
+        self.list_view.setRowCount(len(self.projects_entities))
+        self.list_view.setColumnCount(3)
+
+        for i, entity_dic in enumerate(self.projects_entities):
+            self.list_view.setItem(i, 0, QTableWidgetItem(entity_dic['state']))
+            self.list_view.setItem(i, 1, QTableWidgetItem(entity_dic['ext']))
+            self.list_view.setItem(i, 2, QTableWidgetItem(entity_to_path("mini_film_1", entity_dic)))
 
     def button_clicked(self):
         file_name = self.list_widget.currentItem().text()
