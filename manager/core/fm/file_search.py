@@ -22,10 +22,10 @@ def get_all_filtered(project_name, types=["*"], tasks=["*"], states=["*"], exten
         for task in tasks:
             for state in states:
                 for ext in extensions:
-                    """if ext in apps.get("cache") and state == "":
+                    if ext in apps.get("cache") and state == "":
                         pattern = conf.cache_pattern_path.format(type=type, task=task, ext=ext)
-                    else:"""
-                    pattern = conf.global_pattern_path.format(type=type, task=task, state=state, ext=ext)
+                    else:
+                        pattern = conf.global_pattern_path.format(type=type, task=task, state=state, ext=ext)
                     found = Path(project_path).rglob(pattern)
                     generators.append(found)
     for g in generators:

@@ -15,3 +15,5 @@ cache_pattern_path = '{type}/*/*/{task}/v*/*.{ext}'
 
 assets_pattern_lucid = 'assets/{cat}/{name}/{task}/{version}/{name}_{state}.{ext}'
 shots_pattern_lucid = 'shots/{seq}/{shot}/{name}/{version}/{name}_{state}.{ext}'
+cache_pattern_lucid = 'assets/{cat}/{name}/{task}/{version}/{name}.{ext}'
+
