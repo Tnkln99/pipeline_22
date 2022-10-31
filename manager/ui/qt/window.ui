@@ -18,52 +18,35 @@
     <item row="0" column="0">
      <layout class="QVBoxLayout" name="verticalLayout_2">
       <item>
-       <widget class="QTableWidget" name="list_view">
-        <column>
-         <property name="text">
-          <string>State</string>
-         </property>
-        </column>
-        <column>
-         <property name="text">
-          <string>Ext</string>
-         </property>
-        </column>
-        <column>
-         <property name="text">
-          <string>Full Path</string>
-         </property>
-        </column>
-       </widget>
-      </item>
-      <item>
-       <layout class="QHBoxLayout" name="horizontalLayout_2">
+       <layout class="QHBoxLayout" name="horizontalLayout">
         <item>
-         <layout class="QHBoxLayout" name="horizontalLayout_4">
+         <layout class="QVBoxLayout" name="verticalLayout">
           <item>
-           <layout class="QVBoxLayout" name="verticalLayout">
+           <widget class="QComboBox" name="combo_box_projects"/>
+          </item>
+          <item>
+           <widget class="QComboBox" name="combo_box_pattern"/>
+          </item>
+          <item>
+           <layout class="QHBoxLayout" name="state_layout">
             <item>
-             <layout class="QHBoxLayout" name="state_layout">
-              <item>
-               <widget class="QCheckBox" name="cbx_work">
-                <property name="text">
-                 <string>Work</string>
-                </property>
-               </widget>
-              </item>
-              <item>
-               <widget class="QCheckBox" name="cbx_publish">
-                <property name="text">
-                 <string>Publish</string>
-                </property>
-               </widget>
-              </item>
-             </layout>
+             <widget class="QCheckBox" name="cbx_work">
+              <property name="text">
+               <string>Work</string>
+              </property>
+             </widget>
             </item>
             <item>
-             <layout class="QHBoxLayout" name="apps_layout"/>
+             <widget class="QCheckBox" name="cbx_publish">
+              <property name="text">
+               <string>Publish</string>
+              </property>
+             </widget>
             </item>
            </layout>
+          </item>
+          <item>
+           <layout class="QHBoxLayout" name="apps_layout"/>
           </item>
          </layout>
         </item>
@@ -71,6 +54,9 @@
          <layout class="QVBoxLayout" name="button_layout"/>
         </item>
        </layout>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="utility_layout"/>
       </item>
      </layout>
     </item>
