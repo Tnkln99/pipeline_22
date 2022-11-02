@@ -16,14 +16,15 @@ class Window(QMainWindow):
         self.engine = get()
         print(self.engine)
 
-        self.apps_cbx = []
-        self.buttons = []
-
+        # this lists will contain the filter parameters
         self.extensions = []
         self.states = []
 
         super(Window, self).__init__()
         QtCompat.loadUi(str(ui_path), self)
+
+        self.apps_cbx = []
+        self.buttons = []
 
         self.load_buttons()
         self.load_check_boxs()
@@ -36,10 +37,10 @@ class Window(QMainWindow):
         self.list_E = QListWidget()
 
         self.utility_layout.addWidget(self.list_A)
-        self.utility_layout.addWidget(self.list_B)
+        """self.utility_layout.addWidget(self.list_B)
         self.utility_layout.addWidget(self.list_C)
         self.utility_layout.addWidget(self.list_D)
-        self.utility_layout.addWidget(self.list_E)
+        self.utility_layout.addWidget(self.list_E)"""
 
         self.connect()
 
@@ -62,8 +63,11 @@ class Window(QMainWindow):
         self.cbx_publish.stateChanged.connect(self.refresh_filter)
         self.cbx_work.stateChanged.connect(self.refresh_filter)
 
+        # filter change will trigger the construction of list A
+        # other lists contents will get deleted to restart exploration
         self.combo_box_pattern.currentTextChanged.connect(self.build_a)
 
+        # changes in A will trigger B -> C -> D -> E
         self.list_A.currentItemChanged.connect(self.build_b)
         self.list_B.currentItemChanged.connect(self.build_c)
         self.list_C.currentItemChanged.connect(self.build_d)
@@ -75,6 +79,9 @@ class Window(QMainWindow):
         for button in self.buttons:
             button.clicked.connect(self.button_clicked)
 
+    # changing the global filters (states and used applications)
+    # At the end we are building the  A list to start selection of the user
+    # If user changes the global filter we clear all and restart the process with building only the list A again.
     def refresh_filter(self):
         self.project_name = self.combo_box_projects.currentText()
         self.pattern_name = self.combo_box_pattern.currentText()
@@ -97,10 +104,10 @@ class Window(QMainWindow):
         if self.cbx_work.isChecked():
             self.states.append("__work")
 
-        self.list_B.clear()
-        self.list_C.clear()
-        self.list_D.clear()
-        self.list_E.clear()
+        self.list_B.setParent(None)
+        self.list_C.setParent(None)
+        self.list_D.setParent(None)
+        self.list_E.setParent(None)
 
         self.build_a()
 
@@ -157,13 +164,15 @@ class Window(QMainWindow):
 
     def build_b(self):
         self.list_B.clear()
-        self.list_C.clear()
-        self.list_D.clear()
-        self.list_E.clear()
+        self.list_C.setParent(None)
+        self.list_D.setParent(None)
+        self.list_E.setParent(None)
         self.projects_entities = []
 
         if self.list_A.currentItem() is None:
             return
+
+        self.utility_layout.addWidget(self.list_B)
 
         content_list_a = self.list_A.currentItem().text()
         if self.pattern_name == "assets":
@@ -191,13 +200,15 @@ class Window(QMainWindow):
                 self.list_B.addItem(i)
 
     def build_c(self):
+        self.list_C.clear()
+        self.list_D.setParent(None)
+        self.list_E.setParent(None)
+        self.projects_entities = []
+
         if self.list_A.currentItem() is None or self.list_B.currentItem() is None:
             return
 
-        self.list_C.clear()
-        self.list_D.clear()
-        self.list_E.clear()
-        self.projects_entities = []
+        self.utility_layout.addWidget(self.list_C)
 
         content_list_a = self.list_A.currentItem().text()
         content_list_b = self.list_B.currentItem().text()
@@ -222,10 +233,13 @@ class Window(QMainWindow):
             self.list_C.addItem(i)
 
     def build_d(self):
+        self.list_D.clear()
+        self.list_E.setParent(None)
         if self.list_A.currentItem() is None or self.list_B.currentItem() is None or self.list_C.currentItem() is None:
             return
-        self.list_D.clear()
-        self.list_E.clear()
+
+        self.utility_layout.addWidget(self.list_D)
+
         self.projects_entities.clear()
 
         content_list_a = self.list_A.currentItem().text()
@@ -256,12 +270,14 @@ class Window(QMainWindow):
             self.list_D.addItem(i)
 
     def build_e(self):
+        self.list_E.clear()
+        self.projects_entities = []
+
         if self.list_A.currentItem() is None or self.list_B.currentItem() is None or self.list_C.currentItem() is None \
                 or self.list_D.currentItem() is None:
             return
 
-        self.list_E.clear()
-        self.projects_entities.clear()
+        self.utility_layout.addWidget(self.list_E)
 
         content_list_a = self.list_A.currentItem().text()
         content_list_b = self.list_B.currentItem().text()
