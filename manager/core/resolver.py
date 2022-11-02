@@ -2,6 +2,8 @@ from pathlib import Path
 
 from manager import conf
 from pprint import pprint
+
+from manager.conf import apps
 from manager.core.fm import file_search
 import lucidity
 
@@ -29,10 +31,10 @@ def parse(project_name, file_pattern):
     return data
 
 
-def get_entities(project_name, work_typ, name_a="*", task="*", version="*", state="*", seq="*", shot="*", name_s="*", exts=["*"]):
+def get_entities(project_name, work_typ, cat="*", name_a="*", task="*", version="*", state="*", seq="*", shot="*", name_s="*", exts=["*"]):
     entities = []
     if work_typ == "assets":
-        files = file_search.get_all_filtered_assets(project_name, name_a, task, version, state, exts)
+        files = file_search.get_all_filtered_assets(project_name, cat, name_a, task, version, state, exts)
     elif work_typ == "shots":
         files = file_search.get_all_filtered_shots(project_name, seq, shot, name_s, version, state, exts)
     else:
@@ -62,7 +64,14 @@ def entity_to_path(project_name, data):
 
 
 if __name__ == '__main__':
-    resA = get_entities("mini_film_1", "assets", name_a="mountain_road_01", task="modeling", exts=["hipnc", "abc"])
-    resS = get_entities("mini_film_1", "shots")
+    extensions = []
+    extensions.extend(apps["houdini"])
+    extensions.extend(apps["maya"])
+    extensions.extend(apps["cache"])
 
-    pprint(resS)
+    states = ["__publish", "__work", ""]
+    for i in states:
+        resA = get_entities("mini_film_1", "assets", state=i, exts=extensions)
+    #resS = get_entities("mini_film_1", "shots")
+
+    pprint(resA)

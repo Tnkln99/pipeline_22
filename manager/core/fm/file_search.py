@@ -13,11 +13,11 @@ def pattern_format_correcter(pattern):  # to change "C\blabla\bla\bal to C/blabl
     return res
 
 
-def get_all_filtered_assets(project_name, name="*", task="*", version="*", state="*", exts=["*"]):
+def get_all_filtered_assets(project_name,cat="*", name="*", task="*", version="*", state="*", exts=["*"]):
     project_path = Path(conf.project_path_pattern) / conf.projects.get(project_name)
     generators = []
     for ext in exts:
-        pattern = conf.assets_pattern_path.format(name=name, task=task, version=version, state=state, ext=ext)
+        pattern = conf.assets_pattern_path.format(cat=cat, name=name, task=task, version=version, state=state, ext=ext)
         found = Path(project_path).rglob(pattern)
         generators.append(found)
     for g in generators:
@@ -40,9 +40,9 @@ def get_all_filtered_shots(project_name, seq="*", shot="*", name="*", version="*
 
 if __name__ == '__main__':
     states = ["__work", "__publish"]
-    extensions = ['ma', 'mb', 'hipnc', 'abc', 'json']
-
-    shots_files = get_all_filtered_shots("mini_film_1", state="__work", exts=extensions)
-    print(type(shots_files))
-    for f in shots_files:
+    extensions = ['ma']
+    for state in states:
+        assets_files = get_all_filtered_assets("mini_film_1", state=state, exts=extensions)
+    print(type(assets_files))
+    for f in assets_files:
         print(f)

@@ -10,7 +10,7 @@ apps = {
     "maya": ["ma", "mb"], "houdini": ["hipnc"], "cache": ["abc", "json"]
 }
 
-assets_pattern_path = 'assets/*/{name}/{task}/{version}/{name}{state}.{ext}'
+assets_pattern_path = 'assets/{cat}/{name}/{task}/{version}/{name}{state}.{ext}'
 shots_pattern_path = 'shots/*/*/*/*/{name}{state}.{ext}'
 
 lucid_patters = {
