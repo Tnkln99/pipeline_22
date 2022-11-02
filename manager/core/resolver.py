@@ -1,12 +1,11 @@
 from pathlib import Path
 
 from manager import conf
-from manager.conf import apps
+from pprint import pprint
 from manager.core.fm import file_search
 import lucidity
 
 from manager.core.fm.file_search import pattern_format_correcter
-from pprint import pprint
 
 
 def parse(project_name, file_pattern):
@@ -30,9 +29,15 @@ def parse(project_name, file_pattern):
     return data
 
 
-def get_entities(project_name, types=["*"], tasks=["*"], states=["*"], extensions=["*"]):
+def get_entities(project_name, work_typ, name_a="*", task="*", version="*", state="*", seq="*", shot="*", name_s="*", exts=["*"]):
     entities = []
-    files = file_search.get_all_filtered(project_name, types, tasks, states, extensions)
+    if work_typ == "assets":
+        files = file_search.get_all_filtered_assets(project_name, name_a, task, version, state, exts)
+    elif work_typ == "shots":
+        files = file_search.get_all_filtered_shots(project_name, seq, shot, name_s, version, state, exts)
+    else:
+        print("you have to enter a valid work type <<assets or shots>>")
+
     for file in files:
         entities.append(parse(project_name, file))
     return entities
@@ -48,14 +53,16 @@ def entity_to_path(project_name, data):
     cache_pattern = pattern_format_correcter(cache_path)
 
     templates = [
-        lucidity.Template('caches', cache_pattern),
         lucidity.Template('shots', shots_pattern),
-        lucidity.Template('assets', assets_pattern)
+        lucidity.Template('assets', assets_pattern),
+        lucidity.Template('caches', cache_pattern)
     ]
 
     return lucidity.format(data, templates)[0]
 
 
 if __name__ == '__main__':
+    resA = get_entities("mini_film_1", "assets", name_a="mountain_road_01", task="modeling", exts=["hipnc", "abc"])
+    resS = get_entities("mini_film_1", "shots")
 
-    get_entities("mini_film_1", types=[""], states=[""], extensions=apps["cache"])
+    pprint(resS)

@@ -7,14 +7,14 @@ projects = {
 }
 
 apps = {
-    "maya": ["ma", "mb"], "houdini": ["hipnc"], "cache": ["abc"]
+    "maya": ["ma", "mb"], "houdini": ["hipnc"], "cache": ["abc", "json"]
 }
 
-global_pattern_path = '{type}/*/*/{task}/v*/*_{state}.{ext}'
-cache_pattern_path = '{type}/*/*/{task}/v*/*.{ext}'
+assets_pattern_path = 'assets/*/{name}/{task}/{version}/{name}{state}.{ext}'
+shots_pattern_path = 'shots/*/*/*/*/{name}{state}.{ext}'
 
 lucid_patters = {
-    "assets": 'assets/{cat}/{name}/{task}/{version}/{name}_{state}.{ext}',
-    "shots": 'shots/{seq}/{shot}/{name}/{version}/{name}_{state}.{ext}',
+    "assets": 'assets/{cat}/{name}/{task}/{version}/{name}__{state}.{ext}',
+    "shots": 'shots/{seq}/{shot}/{task}/{version}/{name}__{state}.{ext}',
     "cache": 'assets/{cat}/{name}/{task}/{version}/{name}.{ext}'
 }
