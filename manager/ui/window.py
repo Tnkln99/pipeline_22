@@ -37,10 +37,6 @@ class Window(QMainWindow):
         self.list_E = QListWidget()
 
         self.utility_layout.addWidget(self.list_A)
-        """self.utility_layout.addWidget(self.list_B)
-        self.utility_layout.addWidget(self.list_C)
-        self.utility_layout.addWidget(self.list_D)
-        self.utility_layout.addWidget(self.list_E)"""
 
         self.connect()
 
@@ -311,6 +307,8 @@ class Window(QMainWindow):
             self.list_E.addItem(i)
 
     def button_clicked(self):
+        if self.list_E.currentItem() is None:
+            return
         file_name = self.list_E.currentItem().text()
 
         output_function = getattr(BaseEngine, self.sender().objectName())

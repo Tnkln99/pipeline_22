@@ -25,7 +25,7 @@ def get_all_filtered_assets(project_name,cat="*", name="*", task="*", version="*
             yield f
 
 
-def get_all_filtered_shots(project_name, seq="*", shot="*", name="*", version="*", state="*", exts=["*"]):
+def get_all_filtered_shots(project_name, name="*", state="*", exts=["*"]):
     project_path = Path(conf.project_path_pattern) / conf.projects.get(project_name)
     generators = []
     for ext in exts:

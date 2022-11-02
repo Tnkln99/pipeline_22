@@ -36,7 +36,7 @@ def get_entities(project_name, work_typ, cat="*", name_a="*", task="*", version=
     if work_typ == "assets":
         files = file_search.get_all_filtered_assets(project_name, cat, name_a, task, version, state, exts)
     elif work_typ == "shots":
-        files = file_search.get_all_filtered_shots(project_name, seq, shot, name_s, version, state, exts)
+        files = file_search.get_all_filtered_shots(project_name, name_s, state, exts)
     else:
         print("you have to enter a valid work type <<assets or shots>>")
 

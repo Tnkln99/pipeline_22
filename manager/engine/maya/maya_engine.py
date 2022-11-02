@@ -10,7 +10,7 @@ class MayaEngine(BaseEngine):
         self.implementations.append('publish')
 
     def open(self, file_name):
-        cmds.file(file_name, o=True)
+        cmds.file(file_name, new=False, o=True, open=1, buildLoadSettings=1)
 
     def __str__(self):
         return f"[{__class__.__name__}]"
