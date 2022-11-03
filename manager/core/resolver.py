@@ -31,7 +31,7 @@ def parse(project_name, file_pattern):
     return data
 
 
-def get_entities(project_name, work_typ, cat="*", name_a="*", task="*", version="*", state="*", seq="*", shot="*", name_s="*", exts=["*"]):
+def get_entities(project_name, work_typ, cat="*", name_a="*", task="*", version="*", state="*", name_s="*", exts=["*"]):
     entities = []
     if work_typ == "assets":
         files = file_search.get_all_filtered_assets(project_name, cat, name_a, task, version, state, exts)

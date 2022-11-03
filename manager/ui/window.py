@@ -1,4 +1,5 @@
-from PySide2.QtWidgets import QCheckBox, QPushButton, QListWidget
+from PySide2 import QtCore
+from PySide2.QtWidgets import QCheckBox, QPushButton, QListWidget, QListWidgetItem
 
 import Qt
 from Qt.QtWidgets import QMainWindow
@@ -19,6 +20,8 @@ class Window(QMainWindow):
         # this lists will contain the filter parameters
         self.extensions = []
         self.states = []
+
+        self.userRole = QtCore.Qt.UserRole
 
         super(Window, self).__init__()
         QtCompat.loadUi(str(ui_path), self)
@@ -297,19 +300,22 @@ class Window(QMainWindow):
                                                                                task=content_list_c,
                                                                                version=content_list_d,
                                                                                exts=self.extensions)
-
+        pprint(self.projects_entities)
         scenes = []
+        item = QListWidgetItem()
         for i in self.projects_entities:
-            scene_name = entity_to_path(self.project_name, i[0])
+            item.setData(self.userRole, i[0])
+            scene_name = f"{i[0].get('state') or '__'}/{i[0]['name']}/.{i[0]['ext']}"
             if scene_name not in scenes:
                 scenes.append(scene_name)
         for i in scenes:
-            self.list_E.addItem(i)
+            item.setText(i)
+            self.list_E.addItem(item)
 
     def button_clicked(self):
         if self.list_E.currentItem() is None:
             return
-        file_name = self.list_E.currentItem().text()
+        file_name = entity_to_path(self.project_name, self.list_E.currentItem().data(self.userRole))
 
         output_function = getattr(BaseEngine, self.sender().objectName())
         output_function(self.engine, file_name)
