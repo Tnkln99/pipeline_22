@@ -5,8 +5,8 @@ from pprint import pprint
 from manager.core.resolver import parse
 
 
-def get_all_filtered(project_name, cat="", seq="", shot="", name="", task="", version="", name_s="", state="", ext=""):
-    project_path = Path(conf.project_path_pattern) / conf.projects.get(project_name)
+def get_all_filtered(project_name="", cat="", seq="", shot="", name="", task="", version="", name_s="", state="", ext=""):
+    project_path = Path(conf.project_path_pattern) / conf.projects[project_name]["name"]
     generators = []
 
     if cat != "":
@@ -31,7 +31,7 @@ def get_all_filtered(project_name, cat="", seq="", shot="", name="", task="", ve
             yield f
 
 
-def get_entities(project_name, cat="", seq="", shot="", name="", task="", version="", name_s="", state="", ext=""):
+def get_entities(project_name="", cat="", seq="", shot="", name="", task="", version="", name_s="", state="", ext=""):
     entities = []
     files = get_all_filtered(project_name, cat=cat, seq=seq, shot=shot, name=name, task=task,
                              version=version, name_s=name_s, state=state, ext=ext)
@@ -46,7 +46,7 @@ def entity_to_path(project_name, data):
 
     for i in conf.lucid_patters['assets']:
         template_string = conf.lucid_patters["assets"][i]
-        assets_path = Path(conf.project_path_pattern) / conf.projects.get(project_name) / template_string
+        assets_path = Path(conf.project_path_pattern) / conf.projects[project_name]["name"] / template_string
 
         assets_path = str(assets_path).replace("\\", "/")
 
@@ -54,7 +54,7 @@ def entity_to_path(project_name, data):
 
     for i in conf.lucid_patters['shots']:
         template_string = conf.lucid_patters["shots"][i]
-        shots_path = Path(conf.project_path_pattern) / conf.projects.get(project_name) / template_string
+        shots_path = Path(conf.project_path_pattern) / conf.projects[project_name]["name"] / template_string
 
         shots_path = str(shots_path).replace("\\", "/")
 

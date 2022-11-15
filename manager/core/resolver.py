@@ -10,7 +10,7 @@ def parse(project_name, file_pattern):
 
     for i in conf.lucid_patters['assets']:
         template_string = conf.lucid_patters["assets"][i]
-        assets_path = Path(conf.project_path_pattern) / conf.projects.get(project_name) / template_string
+        assets_path = Path(conf.project_path_pattern) / conf.projects[project_name]["name"] / template_string
 
         assets_path = str(assets_path).replace("\\", "/")
 
@@ -18,7 +18,7 @@ def parse(project_name, file_pattern):
 
     for i in conf.lucid_patters['shots']:
         template_string = conf.lucid_patters["shots"][i]
-        shots_path = Path(conf.project_path_pattern) / conf.projects.get(project_name) / template_string
+        shots_path = Path(conf.project_path_pattern) / conf.projects[project_name]["name"] / template_string
 
         shots_path = str(shots_path).replace("\\", "/")
 
