@@ -16,47 +16,86 @@
   <widget class="QWidget" name="centralwidget">
    <layout class="QGridLayout" name="gridLayout">
     <item row="0" column="0">
-     <layout class="QVBoxLayout" name="verticalLayout_2">
+     <layout class="QVBoxLayout" name="verticalLayout_3">
       <item>
-       <layout class="QHBoxLayout" name="horizontalLayout">
+       <layout class="QVBoxLayout" name="verticalLayout_2">
         <item>
-         <layout class="QVBoxLayout" name="verticalLayout">
+         <layout class="QHBoxLayout" name="combo_box_layout">
           <item>
            <widget class="QComboBox" name="combo_box_projects"/>
           </item>
           <item>
            <widget class="QComboBox" name="combo_box_pattern"/>
           </item>
+         </layout>
+        </item>
+        <item>
+         <layout class="QHBoxLayout" name="horizontalLayout">
           <item>
-           <layout class="QHBoxLayout" name="state_layout">
+           <layout class="QVBoxLayout" name="verticalLayout">
             <item>
-             <widget class="QCheckBox" name="cbx_work">
-              <property name="text">
-               <string>Work</string>
-              </property>
-             </widget>
+             <layout class="QVBoxLayout" name="status_layout">
+              <item>
+               <widget class="QCheckBox" name="cbx_publish">
+                <property name="text">
+                 <string>Publish</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QCheckBox" name="cbx_work">
+                <property name="text">
+                 <string>Work</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QCheckBox" name="cbx_valid">
+                <property name="text">
+                 <string>Valid</string>
+                </property>
+               </widget>
+              </item>
+             </layout>
             </item>
             <item>
-             <widget class="QCheckBox" name="cbx_publish">
-              <property name="text">
-               <string>Publish</string>
+             <spacer name="verticalSpacer">
+              <property name="orientation">
+               <enum>Qt::Vertical</enum>
               </property>
-             </widget>
+              <property name="sizeType">
+               <enum>QSizePolicy::Maximum</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>20</width>
+                <height>10</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+            <item>
+             <layout class="QVBoxLayout" name="apps_layout"/>
             </item>
            </layout>
           </item>
           <item>
-           <layout class="QHBoxLayout" name="apps_layout"/>
+           <layout class="QVBoxLayout" name="results_layout">
+            <item>
+             <layout class="QHBoxLayout" name="utility_layout">
+              <property name="spacing">
+               <number>6</number>
+              </property>
+             </layout>
+            </item>
+           </layout>
           </item>
          </layout>
-        </item>
-        <item>
-         <layout class="QVBoxLayout" name="button_layout"/>
         </item>
        </layout>
       </item>
       <item>
-       <layout class="QHBoxLayout" name="utility_layout"/>
+       <layout class="QVBoxLayout" name="button_layout"/>
       </item>
      </layout>
     </item>

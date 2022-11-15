@@ -6,7 +6,7 @@ from Qt.QtWidgets import QMainWindow
 from Qt import QtWidgets, QtCompat
 
 from manager.conf import ui_path, apps, projects
-from manager.core.resolver import get_entities, entity_to_path
+from manager.core.fm.file_search import get_entities, entity_to_path
 from manager.engine import *
 from manager.engine.base_engine import BaseEngine
 from pprint import pprint
@@ -41,20 +41,19 @@ class Window(QMainWindow):
 
         self.utility_layout.addWidget(self.list_A)
 
-        self.connect()
-
-        self.cbx_publish.setChecked(True)
         self.cbx_work.setChecked(True)
 
         for cbx in self.apps_cbx:
             cbx.setChecked(True)
 
+        self.connect()
+
+        self.cbx_publish.setChecked(True)
+
         self.project_name = self.combo_box_projects.currentText()
         self.pattern_name = self.combo_box_pattern.currentText()
 
-        for state in self.states:
-            self.projects_entities = get_entities(self.project_name, self.pattern_name, state=state,
-                                                  exts=self.extensions)
+        self.projects_entities = []
 
         self.build_a()
 
@@ -99,16 +98,14 @@ class Window(QMainWindow):
                 self.states.append("")
 
         if self.cbx_publish.isChecked():
-            self.states.append("__publish")
+            self.states.append("-publish")
         if self.cbx_work.isChecked():
-            self.states.append("__work")
+            self.states.append("-work")
 
         self.list_B.setParent(None)
         self.list_C.setParent(None)
         self.list_D.setParent(None)
         self.list_E.setParent(None)
-
-        self.build_a()
 
     def load_combo_boxs(self):
         for project in projects.keys():
@@ -138,10 +135,8 @@ class Window(QMainWindow):
         self.pattern_name = self.combo_box_pattern.currentText()
 
         if self.pattern_name == "assets":
-            for state in self.states:
-                self.projects_entities = self.projects_entities + get_entities(self.project_name, self.pattern_name,
-                                                                               state=state,
-                                                                               exts=self.extensions)
+            self.projects_entities = get_entities(self.project_name, cat="*")
+
             names = []
             for i in self.projects_entities:
                 if i[0]['cat'] not in names:
@@ -150,10 +145,7 @@ class Window(QMainWindow):
                 self.list_A.addItem(i)
 
         if self.pattern_name == "shots":
-            for state in self.states:
-                self.projects_entities = self.projects_entities + get_entities(self.project_name, self.pattern_name,
-                                                                               state=state,
-                                                                               exts=self.extensions)
+            self.projects_entities = get_entities(self.project_name, seq="*")
             seq_l = []
             for i in self.projects_entities:
                 if i[0]['seq'] not in seq_l:
@@ -175,22 +167,17 @@ class Window(QMainWindow):
 
         content_list_a = self.list_A.currentItem().text()
         if self.pattern_name == "assets":
-            for state in self.states:
-                self.projects_entities = self.projects_entities + get_entities(self.project_name, self.pattern_name,
-                                                                               state=state, cat=content_list_a,
-                                                                               exts=self.extensions)
-            tasks = []
+            self.projects_entities = get_entities(self.project_name, cat=content_list_a, name="*")
+
+            names = []
             for i in self.projects_entities:
-                if i[0]['name'] not in tasks:
-                    tasks.append(i[0]['name'])
-            for i in tasks:
+                if i[0]['name'] not in names:
+                    names.append(i[0]['name'])
+            for i in names:
                 self.list_B.addItem(i)
 
         if self.pattern_name == "shots":
-            for state in self.states:
-                self.projects_entities = self.projects_entities + get_entities(self.project_name, self.pattern_name,
-                                                                               state=state, seq=content_list_a,
-                                                                               exts=self.extensions)
+            self.projects_entities = get_entities(self.project_name, seq=content_list_a, shot="*")
             shots = []
             for i in self.projects_entities:
                 if i[0]['shot'] not in shots:
@@ -213,17 +200,10 @@ class Window(QMainWindow):
         content_list_b = self.list_B.currentItem().text()
 
         if self.pattern_name == "assets":
-            for state in self.states:
-                self.projects_entities = self.projects_entities + get_entities(self.project_name, self.pattern_name,
-                                                                               name_a=content_list_b, state=state,
-                                                                               cat=content_list_a,
-                                                                               exts=self.extensions)
+            self.projects_entities = get_entities(self.project_name, cat=content_list_a, name=content_list_b, task="*")
         if self.pattern_name == "shots":
-            for state in self.states:
-                self.projects_entities = self.projects_entities + get_entities(self.project_name, self.pattern_name,
-                                                                               shot=content_list_b, state=state,
-                                                                               seq=content_list_a,
-                                                                               exts=self.extensions)
+            self.projects_entities = get_entities(self.project_name, seq=content_list_a, shot=content_list_b, task="*")
+
         tasks = []
         for i in self.projects_entities:
             if i[0]['task'] not in tasks:
@@ -246,20 +226,12 @@ class Window(QMainWindow):
         content_list_c = self.list_C.currentItem().text()
 
         if self.pattern_name == "assets":
-            for state in self.states:
-                self.projects_entities = self.projects_entities + get_entities(self.project_name, self.pattern_name,
-                                                                               name_a=content_list_b, state=state,
-                                                                               cat=content_list_a,
-                                                                               task=content_list_c,
-                                                                               exts=self.extensions)
+            self.projects_entities = get_entities(self.project_name, cat=content_list_a, name=content_list_b,
+                                                      task=content_list_c, version="*")
 
         if self.pattern_name == "shots":
-            for state in self.states:
-                self.projects_entities = self.projects_entities + get_entities(self.project_name, self.pattern_name,
-                                                                               shot=content_list_b, state=state,
-                                                                               seq=content_list_a,
-                                                                               task=content_list_c,
-                                                                               exts=self.extensions)
+            self.projects_entities = get_entities(self.project_name, seq=content_list_a, shot=content_list_b,
+                                                  task=content_list_c, version="*")
         versions = []
         for i in self.projects_entities:
             version = i[0]['version']
@@ -285,21 +257,24 @@ class Window(QMainWindow):
 
         if self.pattern_name == "assets":
             for state in self.states:
-                self.projects_entities = self.projects_entities + get_entities(self.project_name, self.pattern_name,
-                                                                               state=state,
-                                                                               cat=content_list_a,
-                                                                               name_a=content_list_b,
-                                                                               task=content_list_c,
-                                                                               version=content_list_d,
-                                                                               exts=self.extensions)
+                for ext in self.extensions:
+                    self.projects_entities = self.projects_entities + get_entities(self.project_name, cat=content_list_a
+                                                                                   , name=content_list_b,
+                                                                                   task=content_list_c,
+                                                                                   version=content_list_d, state=state,
+                                                                                   name_s=content_list_b,
+                                                                                   ext=ext)
         if self.pattern_name == "shots":
             for state in self.states:
-                self.projects_entities = self.projects_entities + get_entities(self.project_name, self.pattern_name,
-                                                                               seq=content_list_a, state=state,
-                                                                               shot=content_list_b,
-                                                                               task=content_list_c,
-                                                                               version=content_list_d,
-                                                                               exts=self.extensions)
+                for ext in self.extensions:
+                    self.projects_entities = self.projects_entities + get_entities(self.project_name,
+                                                                                   seq=content_list_a,
+                                                                                   shot=content_list_b,
+                                                                                   task=content_list_c,
+                                                                                   version=content_list_d,
+                                                                                   name_s="movie",
+                                                                                   state=state,
+                                                                                   ext=ext)
         pprint(self.projects_entities)
         scenes = []
         item = QListWidgetItem()
