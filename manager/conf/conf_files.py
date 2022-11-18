@@ -9,43 +9,53 @@ projects = {
         "script_name": "test_td",
         "api_key": "uqtcaegzgsqzDf6ttkz%lkgfw",
         "id": 1095,
-        "index_data_file": 3
+        "coupe": 5
         }
 }
 
-conf_server_data = {"shotgun": ["cat", "name", "task"]}
-
 translate_shotgun = {
+    "shot": "code",
+    "seq": "code",
     "cat": "sg_asset_type",
     "name": "code",
     "task": "content"
 }
+
+translate_fs = {
+    "entity.Asset.code": "name",
+    "entity.Shot.code": "name",
+    "entity.Asset.sg_asset_type": "cat",
+    "sg_asset_type": "cat",
+    "code": "name",
+    "content": "task"
+}
+
 
 apps = {
     "maya": ["ma", "mb"], "houdini": ["hipnc"], "cache": ["abc", "json"]
 }
 
 
-assets_pattern_path = 'assets/{cat}/{name}/{task}/{version}/{name_s}{state}.{ext}'
-shots_pattern_path = 'shots/{seq}/{shot}/{task}/{version}/{name_s}{state}.{ext}'
+assets_pattern_path = '{project_name}/assets/{cat}/{name}/{task}/{version}/{name_s}{state}.{ext}'
+shots_pattern_path = '{project_name}/shots/{seq}/{shot}/{task}/{version}/{name_s}{state}.{ext}'
 
 lucid_patters = {
     "assets": {
-        'Ext': 'assets/{cat}/{name}/{task}/{version}/{name}-{state}.{ext}',
-        "Cache": 'assets/{cat}/{name}/{task}/{version}/{name}.{ext}',
-        'State': 'assets/{cat}/{name}/{task}/{version}/{state}',
-        'Version': 'assets/{cat}/{name}/{task}/{version}',
-        'Task': 'assets/{cat}/{name}/{task}',
-        'Name': 'assets/{cat}/{name}',
-        'Cat': 'assets/{cat}'
+        'Ext': '{project_name}/assets/{cat}/{name}/{task}/{version}/{name}-{state}.{ext}',
+        "Cache": '{project_name}/assets/{cat}/{name}/{task}/{version}/{name}.{ext}',
+        'State': '{project_name}/assets/{cat}/{name}/{task}/{version}/{state}',
+        'Version': '{project_name}/assets/{cat}/{name}/{task}/{version}',
+        'Task': '{project_name}/assets/{cat}/{name}/{task}',
+        'Name': '{project_name}/assets/{cat}/{name}',
+        'Cat': '{project_name}/assets/{cat}'
     },
     "shots": {
-        'Ext': 'shots/{seq}/{shot}/{task}/{version}/{name}-{state}.{ext}',
-        'State': 'shots/{seq}/{shot}/{task}/{version}/{state}',
-        'Version': 'shots/{seq}/{shot}/{task}/{version}',
-        'Task': 'shots/{seq}/{shot}/{task}',
-        'Shot': 'shots/{seq}/{shot}',
-        'Seq': 'shots/{seq}'
+        'Ext': '{project_name}/shots/{seq}/{shot}/{task}/{version}/{name}-{state}.{ext}',
+        'State': '{project_name}/shots/{seq}/{shot}/{task}/{version}/{state}',
+        'Version': '{project_name}/shots/{seq}/{shot}/{task}/{version}',
+        'Task': '{project_name}/shots/{seq}/{shot}/{task}',
+        'Shot': '{project_name}/shots/{seq}/{shot}',
+        'Seq': '{project_name}/shots/{seq}'
     },
     "render": 'assets{cat}/{name}/{task}/{version}/render/{name}.jpg',
 }

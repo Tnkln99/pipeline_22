@@ -1,5 +1,6 @@
-import cmds
+import maya.cmds as cmds
 
+from manager.core.fm.file_search import entity_to_path
 from manager.engine.base_engine import BaseEngine
 
 
@@ -9,8 +10,9 @@ class MayaEngine(BaseEngine):
         self.implementations.append('reference')
         self.implementations.append('publish')
 
-    def open(self, file_name):
-        cmds.file(file_name, new=False, o=True, open=1, buildLoadSettings=1)
+    def open(self, file_data, project_name):
+        file_name = entity_to_path(project_name, file_data)
+        cmds.file(file_name, o=True, force=True)
 
     def __str__(self):
         return f"[{__class__.__name__}]"
