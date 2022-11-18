@@ -1,10 +1,10 @@
 from PySide2 import QtCore
-from PySide2.QtWidgets import QWidget, QLabel, QListWidget, QHBoxLayout, QBoxLayout, QPushButton
+from PySide2.QtWidgets import QWidget, QLabel, QListWidget, QHBoxLayout, QBoxLayout, QPushButton, QListWidgetItem
 
 
 class ShelfWidget(QWidget):
 
-    def __init__(self, label, parent_layout, button_list, is_active=False):
+    def __init__(self, label, parent_layout, button_list, entities, is_active=False):
         super(ShelfWidget, self).__init__()
         self.is_active = is_active
 
@@ -25,6 +25,7 @@ class ShelfWidget(QWidget):
 
         if self.is_active:
             parent_layout.addLayout(self.layout)
+            self.build(entities)
 
     def init_buttons(self, button_list):
         for button_name in button_list:
@@ -46,11 +47,17 @@ class ShelfWidget(QWidget):
 
         self.layout.addWidget(button)
 
-    def build(self, entity):
-        """for i in entity:
-            item = QListWidgetItem()
-            item.setData(self.userRole, i[0])
-            item.setText(i[0][self.label])
-            self.list.addItem(item)"""
-        print(self.label)
+    def get_label(self):
+        return self.label
+
+    def build(self, entities):
+        lables = []
+        for i in entities:
+            if i[self.label] not in lables:
+                lables.append(i[self.label])
+
+                item = QListWidgetItem()
+                item.setData(self.userRole, i[0])
+                item.setText(i[self.label])
+                self.list.addItem(item)
 

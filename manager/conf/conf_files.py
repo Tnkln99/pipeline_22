@@ -13,6 +13,13 @@ projects = {
         }
 }
 
+hierarchy_descendant_asset = {
+    "cat": "name",
+    "name": "task",
+    "task": "version",
+    "version": "scene"
+}
+
 translate_shotgun = {
     "shot": "code",
     "seq": "code",

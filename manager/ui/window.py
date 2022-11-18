@@ -7,10 +7,7 @@ from Qt import QtWidgets, QtCompat
 
 from manager.conf import ui_path, apps, projects
 from manager.core.data_api.data import get_entities
-from manager.core.fm.file_search import entity_to_path
 from manager.engine import *
-from manager.engine.base_engine import BaseEngine
-from pprint import pprint
 
 
 class Window(QMainWindow):
@@ -129,7 +126,7 @@ class Window(QMainWindow):
             self.apps_layout.addWidget(checkbox)
             self.apps_cbx.append(checkbox)
 
-    def build_a(self):
+    def init_shelves(self):
         self.list_A.clear()
         self.projects_entities = []
         self.project_name = self.combo_box_projects.currentText()
