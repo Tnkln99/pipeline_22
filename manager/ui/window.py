@@ -301,7 +301,7 @@ class Window(QMainWindow):
         file_data = self.list_E.currentItem().data(self.userRole)
 
         output_function = getattr(type(self.engine), self.sender().objectName())
-        output_function(self.engine, file_data, self.project_name)
+        output_function(self.engine, file_data)
 
 
 if __name__ == '__main__':

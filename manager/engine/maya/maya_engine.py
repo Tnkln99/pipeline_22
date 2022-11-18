@@ -10,8 +10,8 @@ class MayaEngine(BaseEngine):
         self.implementations.append('reference')
         self.implementations.append('publish')
 
-    def open(self, file_data, project_name):
-        file_name = entity_to_path(project_name, file_data)
+    def open(self, file_data):
+        file_name = entity_to_path(file_data)
         cmds.file(file_name, o=True, force=True)
 
     def __str__(self):

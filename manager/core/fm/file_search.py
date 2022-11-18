@@ -41,12 +41,12 @@ def get_all_filtered(project_name="", type_req="", cat="", seq="", shot="", name
             yield f
 
 
-def entity_to_path(project_name, data):
+def entity_to_path(data):
     templates = []
 
     for i in conf.lucid_patters['assets']:
         template_string = conf.lucid_patters["assets"][i]
-        assets_path = Path(conf.project_path_pattern) / conf.projects[project_name]["name"] / template_string
+        assets_path = Path(conf.project_path_pattern) / template_string
 
         assets_path = str(assets_path).replace("\\", "/")
 
@@ -54,7 +54,7 @@ def entity_to_path(project_name, data):
 
     for i in conf.lucid_patters['shots']:
         template_string = conf.lucid_patters["shots"][i]
-        shots_path = Path(conf.project_path_pattern) / conf.projects[project_name]["name"] / template_string
+        shots_path = Path(conf.project_path_pattern) / template_string
 
         shots_path = str(shots_path).replace("\\", "/")
 
