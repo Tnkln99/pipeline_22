@@ -13,7 +13,6 @@ def get_entities(project_name="", type_req="", cat="", seq="", shot="", name="",
     res = []
     for f in files:
         res.append(parse(project_name, f))
-
     return res
 
 

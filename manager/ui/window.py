@@ -8,6 +8,7 @@ from Qt import QtWidgets, QtCompat
 from manager.conf import ui_path, apps, projects
 from manager.core.data_api.data import get_entities
 from manager.engine import *
+from manager.ui.shelf_controller.shelf_controller import ShelfController
 
 
 class Window(QMainWindow):
@@ -31,43 +32,29 @@ class Window(QMainWindow):
         self.load_check_boxs()
         self.load_combo_boxs()
 
-        self.list_A = QListWidget()
-        self.list_B = QListWidget()
-        self.list_C = QListWidget()
-        self.list_D = QListWidget()
-        self.list_E = QListWidget()
+        self.project_name = self.combo_box_projects.currentText()
+        self.pattern_name = self.combo_box_pattern.currentText()
 
-        self.utility_layout.addWidget(self.list_A)
+        self.projects_entities = []
+        self.shelves = None
+
+        self.init_shelves()
 
         self.cbx_work.setChecked(True)
 
         for cbx in self.apps_cbx:
             cbx.setChecked(True)
 
-        self.connect()
-
         self.cbx_publish.setChecked(True)
 
-        self.project_name = self.combo_box_projects.currentText()
-        self.pattern_name = self.combo_box_pattern.currentText()
-
-        self.projects_entities = []
-
-        self.build_a()
+        self.connect()
 
     def connect(self):
+        self.combo_box_projects.currentIndexChanged.connect(self.init_shelves)
+        self.combo_box_pattern.currentIndexChanged.connect(self.init_shelves)
+
         self.cbx_publish.stateChanged.connect(self.refresh_filter)
         self.cbx_work.stateChanged.connect(self.refresh_filter)
-
-        # filter change will trigger the construction of list A
-        # other lists contents will get deleted to restart exploration
-        self.combo_box_pattern.currentTextChanged.connect(self.build_a)
-
-        # changes in A will trigger B -> C -> D -> E
-        self.list_A.currentItemChanged.connect(self.build_b)
-        self.list_B.currentItemChanged.connect(self.build_c)
-        self.list_C.currentItemChanged.connect(self.build_d)
-        self.list_D.currentItemChanged.connect(self.build_e)
 
         for cbx in self.apps_cbx:
             cbx.stateChanged.connect(self.refresh_filter)
@@ -75,13 +62,9 @@ class Window(QMainWindow):
         for button in self.buttons:
             button.clicked.connect(self.button_clicked)
 
-    # changing the global filters (states and used applications)
-    # At the end we are building the  A list to start selection of the user
-    # If user changes the global filter we clear all and restart the process with building only the list A again.
-    def refresh_filter(self):
-        self.project_name = self.combo_box_projects.currentText()
-        self.pattern_name = self.combo_box_pattern.currentText()
+        self.shelves.connect(self.states, self.extensions)
 
+    def refresh_filter(self):
         self.states.clear()
         self.extensions.clear()
 
@@ -100,10 +83,7 @@ class Window(QMainWindow):
         if self.cbx_work.isChecked():
             self.states.append("-work")
 
-        self.list_B.setParent(None)
-        self.list_C.setParent(None)
-        self.list_D.setParent(None)
-        self.list_E.setParent(None)
+        self.shelves.refresh(self.project_name, self.pattern_name, self.states, self.extensions)
 
     def load_combo_boxs(self):
         for project in projects.keys():
@@ -127,170 +107,18 @@ class Window(QMainWindow):
             self.apps_cbx.append(checkbox)
 
     def init_shelves(self):
-        self.list_A.clear()
-        self.projects_entities = []
         self.project_name = self.combo_box_projects.currentText()
         self.pattern_name = self.combo_box_pattern.currentText()
 
         if self.pattern_name == "Asset":
-            self.projects_entities = get_entities(project_name=self.project_name, type_req=self.pattern_name, cat="*")
+            entities_start = get_entities(project_name=self.project_name, type_req=self.pattern_name, cat="*")
+        elif self.pattern_name == "Shot":
+            entities_start = get_entities(project_name=self.project_name, type_req=self.pattern_name, seq="*")
 
-            names = []
-
-            for i in self.projects_entities:
-                if i['cat'] not in names:
-                    names.append(i['cat'])
-            for i in names:
-                self.list_A.addItem(i)
-
-        if self.pattern_name == "Shot":
-            self.projects_entities = get_entities(project_name=self.project_name, type_req=self.pattern_name, seq="*")
-            seq_l = []
-            for i in self.projects_entities:
-                if i['seq'] not in seq_l:
-                    seq_l.append(i['seq'])
-            for i in seq_l:
-                self.list_A.addItem(i)
-
-    def build_b(self):
-        self.list_B.clear()
-        self.list_C.setParent(None)
-        self.list_D.setParent(None)
-        self.list_E.setParent(None)
-        self.projects_entities = []
-
-        if self.list_A.currentItem() is None:
-            return
-
-        self.utility_layout.addWidget(self.list_B)
-
-        content_list_a = self.list_A.currentItem().text()
-        if self.pattern_name == "Asset":
-            self.projects_entities = get_entities(project_name=self.project_name,type_req=self.pattern_name,cat=content_list_a, name="*")
-
-            names = []
-            for i in self.projects_entities:
-                if i['name'] not in names:
-                    names.append(i['name'])
-            for i in names:
-                self.list_B.addItem(i)
-
-        if self.pattern_name == "Shot":
-            self.projects_entities = get_entities(project_name=self.project_name, type_req=self.pattern_name, seq=content_list_a, shot="*")
-            #pprint(self.projects_entities)
-            shots = []
-            for i in self.projects_entities:
-                if i['shot'] not in shots:
-                    shots.append(i['shot'])
-            for i in shots:
-                self.list_B.addItem(i)
-
-    def build_c(self):
-        self.list_C.clear()
-        self.list_D.setParent(None)
-        self.list_E.setParent(None)
-        self.projects_entities = []
-
-        if self.list_A.currentItem() is None or self.list_B.currentItem() is None:
-            return
-
-        self.utility_layout.addWidget(self.list_C)
-
-        content_list_a = self.list_A.currentItem().text()
-        content_list_b = self.list_B.currentItem().text()
-
-        if self.pattern_name == "Asset":
-            self.projects_entities = get_entities(project_name=self.project_name, type_req=self.pattern_name, cat=content_list_a,
-                                                  name=content_list_b, task="*")
-        if self.pattern_name == "Shot":
-            self.projects_entities = get_entities(project_name=self.project_name, type_req=self.pattern_name, seq=content_list_a,
-                                                  shot=content_list_b, task="*")
-
-        tasks = []
-        for i in self.projects_entities:
-            if i['task'] not in tasks:
-                tasks.append(i['task'])
-        for i in tasks:
-            self.list_C.addItem(i)
-
-    def build_d(self):
-        self.list_D.clear()
-        self.list_E.setParent(None)
-        if self.list_A.currentItem() is None or self.list_B.currentItem() is None or self.list_C.currentItem() is None:
-            return
-
-        self.utility_layout.addWidget(self.list_D)
-
-        self.projects_entities.clear()
-
-        content_list_a = self.list_A.currentItem().text()
-        content_list_b = self.list_B.currentItem().text()
-        content_list_c = self.list_C.currentItem().text()
-
-        if self.pattern_name == "Asset":
-            self.projects_entities = get_entities(project_name=self.project_name, type_req=self.pattern_name,
-                                                  cat=content_list_a,
-                                                  name=content_list_b,
-                                                  task=content_list_c, version="*")
-
-        if self.pattern_name == "Shot":
-            self.projects_entities = get_entities(project_name=self.project_name, type_req=self.pattern_name,
-                                                  seq=content_list_a,
-                                                  shot=content_list_b,
-                                                  task=content_list_c, version="*")
-        versions = []
-        for i in self.projects_entities:
-            version = i['version']
-            if version not in versions:
-                versions.append(version)
-        for i in versions:
-            self.list_D.addItem(i)
-
-    def build_e(self):
-        self.list_E.clear()
-        self.projects_entities = []
-
-        if self.list_A.currentItem() is None or self.list_B.currentItem() is None or self.list_C.currentItem() is None \
-                or self.list_D.currentItem() is None:
-            return
-
-        self.utility_layout.addWidget(self.list_E)
-
-        content_list_a = self.list_A.currentItem().text()
-        content_list_b = self.list_B.currentItem().text()
-        content_list_c = self.list_C.currentItem().text()
-        content_list_d = self.list_D.currentItem().text()
-
-        if self.pattern_name == "Asset":
-            for state in self.states:
-                for ext in self.extensions:
-                    self.projects_entities = self.projects_entities + get_entities(project_name=self.project_name,
-                                                                                   type_req=self.pattern_name,
-                                                                                   cat=content_list_a,
-                                                                                   name=content_list_b,
-                                                                                   task=content_list_c,
-                                                                                   version=content_list_d, state=state,
-                                                                                   name_s=content_list_b,
-                                                                                   ext=ext)
-        if self.pattern_name == "Shot":
-            for state in self.states:
-                for ext in self.extensions:
-                    self.projects_entities = self.projects_entities + get_entities(project_name=self.project_name,
-                                                                                   type_req=self.pattern_name,
-                                                                                   seq=content_list_a,
-                                                                                   shot=content_list_b,
-                                                                                   task=content_list_c,
-                                                                                   version=content_list_d,
-                                                                                   name_s="movie",
-                                                                                   state=state,
-                                                                                   ext=ext)
-
-        for i in self.projects_entities:
-            item = QListWidgetItem()
-            item.setData(self.userRole, i)
-            scene_name = f"{i.get('state') or '__'}/{i['name']}/.{i['ext']}"
-            item.setText(scene_name)
-            self.list_E.addItem(item)
+        if self.shelves is None:
+            self.shelves = ShelfController(self.utility_layout, entities_start, self.pattern_name)
+        else:
+            self.shelves.restart(entities_start, self.pattern_name, self.states, self.extensions)
 
     def button_clicked(self):
         if self.list_E.currentItem() is None:

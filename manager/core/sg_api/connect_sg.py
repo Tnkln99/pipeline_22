@@ -67,9 +67,9 @@ def translate_shot_sg_to_entity(list_entity_sg, project_name):
             keys.append(key)
         translated_entity = {'project_name': conf.projects[project_name]["name"]}
         for key in keys:
-            if key == "entity.Shot.code":
-                seq = entity["entity.Shot.code"].split("_")[0]
-                shot = entity["entity.Shot.code"].split("_")[1]
+            if key == "code":
+                seq = entity["code"].split("_")[0]
+                shot = entity["code"].split("_")[1]
                 translated_entity["seq"] = seq
                 translated_entity["shot"] = shot
             elif conf.translate_fs.get(key) is not None:
@@ -137,4 +137,4 @@ if __name__ == '__main__':
     pprint(get_entities(project_name='mini_film_1', type_req="Asset", cat="*", name="*", task="rigging"))
 
     print("---------------------------------------------------------------------------------------------")
-    pprint(get_entities(project_name='mini_film_1', type_req="Shot", seq="*", shot="*", task="Animation"))
+    pprint(get_entities(project_name='mini_film_1', type_req="Shot", seq="*"))

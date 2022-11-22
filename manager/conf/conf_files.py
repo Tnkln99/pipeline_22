@@ -13,7 +13,9 @@ projects = {
         }
 }
 
-hierarchy_descendant_asset = {
+hierarchy_descendant = {
+    "seq": "shot",
+    "shot": "task",
     "cat": "name",
     "name": "task",
     "task": "version",

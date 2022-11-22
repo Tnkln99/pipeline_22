@@ -4,10 +4,9 @@ from PySide2.QtWidgets import QWidget, QLabel, QListWidget, QHBoxLayout, QBoxLay
 
 class ShelfWidget(QWidget):
 
-    def __init__(self, label, parent_layout, button_list, entities, is_active=False):
+    def __init__(self, label, parent_layout, button_list, entities, userRole, is_active=False):
         super(ShelfWidget, self).__init__()
         self.is_active = is_active
-
         self.parent_layout = parent_layout
 
         self.layout = QHBoxLayout()
@@ -25,7 +24,7 @@ class ShelfWidget(QWidget):
 
         if self.is_active:
             parent_layout.addLayout(self.layout)
-            self.build(entities)
+            self.build(entities, userRole)
 
     def init_buttons(self, button_list):
         for button_name in button_list:
@@ -50,14 +49,27 @@ class ShelfWidget(QWidget):
     def get_label(self):
         return self.label
 
-    def build(self, entities):
-        lables = []
-        for i in entities:
-            if i[self.label] not in lables:
-                lables.append(i[self.label])
-
+    def build(self, entities, userRole):
+        self.list.clear()
+        if self.label.text() != "scene":
+            lables = []
+            for entity in entities:
+                if entity[self.label.text()] not in lables:
+                    lables.append(entity[self.label.text()])
+                    self.list.addItem(entity[self.label.text()])
+            #self.list.setCurrentRow(0)
+        else:
+            for i in entities:
+                print(i)
                 item = QListWidgetItem()
-                item.setData(self.userRole, i[0])
-                item.setText(i[self.label])
+                item.setData(userRole, i)
+                scene_name = f"{i.get('state') or '__'}/{i['name']}/.{i['ext']}"
+                item.setText(scene_name)
                 self.list.addItem(item)
 
+    def deleteLater(self) -> None:
+        self.list.deleteLater()
+        self.label.deleteLater()
+        for button in self.buttons:
+            button.deleteLater()
+        super(ShelfWidget, self).deleteLater()
