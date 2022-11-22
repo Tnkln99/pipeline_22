@@ -60,7 +60,6 @@ class ShelfWidget(QWidget):
             #self.list.setCurrentRow(0)
         else:
             for i in entities:
-                print(i)
                 item = QListWidgetItem()
                 item.setData(userRole, i)
                 scene_name = f"{i.get('state') or '__'}/{i['name']}/.{i['ext']}"

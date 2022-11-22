@@ -1,5 +1,5 @@
 from PySide2 import QtCore
-from PySide2.QtWidgets import QCheckBox, QPushButton, QListWidget, QListWidgetItem
+from PySide2.QtWidgets import QCheckBox, QPushButton
 
 import Qt
 from Qt.QtWidgets import QMainWindow
@@ -45,9 +45,9 @@ class Window(QMainWindow):
         for cbx in self.apps_cbx:
             cbx.setChecked(True)
 
-        self.cbx_publish.setChecked(True)
-
         self.connect()
+
+        self.cbx_publish.setChecked(True)
 
     def connect(self):
         self.combo_box_projects.currentIndexChanged.connect(self.init_shelves)
@@ -121,12 +121,7 @@ class Window(QMainWindow):
             self.shelves.restart(entities_start, self.pattern_name, self.states, self.extensions)
 
     def button_clicked(self):
-        if self.list_E.currentItem() is None:
-            return
-        file_data = self.list_E.currentItem().data(self.userRole)
-
-        output_function = getattr(type(self.engine), self.sender().objectName())
-        output_function(self.engine, file_data)
+        self.shelves.button_clicked(self.sender().objectName(), self.engine)
 
 
 if __name__ == '__main__':

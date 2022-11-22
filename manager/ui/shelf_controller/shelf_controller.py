@@ -38,7 +38,6 @@ class ShelfController:
                     self.entities = self.entities + add_entity
         elif next_shelf_label is not None:
             entity.update({next_shelf_label: "*"})
-            print(entity)
             self.entities = data.get_entities(**entity)
         else:
             return
@@ -79,7 +78,7 @@ class ShelfController:
                 self.close_shelve("scene")
                 self.update_entities(project_name, type_req, states, extensions)
                 return
-        self.update_entities(project_name, type_req, states, extensions)
+        self.connect(states, extensions)
 
     def restart(self, entities, type_req, states, extensions):
         self.type_req = type_req
@@ -94,4 +93,12 @@ class ShelfController:
             self.shelves = [ShelfWidget("seq", self.parent_layout, ["add"], entities, self.userRole, True)]
 
         self.connect(states, extensions)
+
+    def button_clicked(self, button_name, engine):
+        for shelf in self.shelves:
+            if shelf.label.text() == "scene":
+                file_data = shelf.list.currentItem().data(self.userRole)
+
+                output_function = getattr(type(engine), button_name)
+                output_function(engine, file_data)
 
