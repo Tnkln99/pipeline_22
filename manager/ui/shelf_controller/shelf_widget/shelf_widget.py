@@ -59,6 +59,7 @@ class ShelfWidget(QWidget):
                     self.list.addItem(entity[self.label.text()])
             #self.list.setCurrentRow(0)
         else:
+            print(entities)
             for i in entities:
                 item = QListWidgetItem()
                 item.setData(userRole, i)

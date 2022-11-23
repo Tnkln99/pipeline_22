@@ -3,6 +3,7 @@ from PySide2 import QtCore
 from manager import conf
 from manager.core.data_api import data
 from manager.ui.shelf_controller.shelf_widget.shelf_widget import ShelfWidget
+from pprint import pprint
 
 
 class ShelfController:
@@ -33,7 +34,11 @@ class ShelfController:
             self.entities = []
             for state in states:
                 for ext in extensions:
-                    entity.update({"state": state, "name_s": self.content_with_label("name"), "ext": ext})
+                    if type_req == "Asset":
+                        entity.update({"state": state, "name_s": self.content_with_label("name"), "ext": ext})
+                    if type_req == "Shot":
+                        entity.update({"state": state, "name_s": "movie", "ext": ext})
+                    pprint(entity)
                     add_entity = data.get_entities(**entity)
                     self.entities = self.entities + add_entity
         elif next_shelf_label is not None:
@@ -76,7 +81,7 @@ class ShelfController:
         for shelf in self.shelves:
             if shelf.label.text() == "scene":
                 self.close_shelve("scene")
-                self.update_entities(project_name, type_req, states, extensions)
+                self.connect(states, extensions)
                 return
         self.connect(states, extensions)
 
