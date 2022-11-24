@@ -1,4 +1,5 @@
 from shotgun_api3 import shotgun
+from manager.conf.p import private_conf
 from manager import conf
 from pprint import pprint
 
@@ -9,16 +10,16 @@ def get_shot_gun(project_name):
     global sg
 
     if not sg:
-        sg = shotgun.Shotgun(conf.projects[project_name]["server"],
-                             conf.projects[project_name]["script_name"],
-                             conf.projects[project_name]["api_key"])
+        sg = shotgun.Shotgun(private_conf.projects[project_name]["server"],
+                             private_conf.projects[project_name]["script_name"],
+                             private_conf.projects[project_name]["api_key"])
     return sg
 
 
 def get_filters_asset(project_name, **kwargs):
     fields = ["code", "sg_asset_type", "tasks"]
     filters = [
-        ["project", "is", {"type": "Project", "id": conf.projects[project_name]["id"]}]
+        ["project", "is", {"type": "Project", "id": private_conf.projects[project_name]["id"]}]
     ]
 
     for key in kwargs:
@@ -33,7 +34,7 @@ def get_filters_asset(project_name, **kwargs):
 def get_filters_shot(project_name, **kwargs):
     fields = ["code", "assets"]
     filters = [
-        ["project", "is", {"type": "Project", "id": conf.projects[project_name]["id"]}]
+        ["project", "is", {"type": "Project", "id": private_conf.projects[project_name]["id"]}]
     ]
 
     for key in kwargs:
@@ -105,7 +106,7 @@ def get_entities(**kwargs):
     if "content" in kwargs.keys():
         fields = ["content", "code", "name", f"entity.{type_req}.sg_asset_type", f"entity.{type_req}.code"]
         new_filter = [
-            ["project", "is", {"type": "Project", "id": conf.projects[project_name]["id"]}]
+            ["project", "is", {"type": "Project", "id": private_conf.projects[project_name]["id"]}]
         ]
 
         if kwargs.get("content") != "*":

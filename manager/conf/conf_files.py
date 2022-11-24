@@ -5,10 +5,6 @@ project_path_pattern = 'C:/Users/tanku/Documents/mini_films'
 projects = {
     "mini_film_1": {
         "name": "MMOVIE",
-        "server": "https://artfx.shotgunstudio.com",
-        "script_name": "test_td",
-        "api_key": "uqtcaegzgsqzDf6ttkz%lkgfw",
-        "id": 1095,
         "coupe": 5
         }
 }
