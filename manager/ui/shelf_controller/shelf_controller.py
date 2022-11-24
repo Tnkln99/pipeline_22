@@ -38,7 +38,6 @@ class ShelfController:
                         entity.update({"state": state, "name_s": self.content_with_label("name"), "ext": ext})
                     if type_req == "Shot":
                         entity.update({"state": state, "name_s": "movie", "ext": ext})
-                    pprint(entity)
                     add_entity = data.get_entities(**entity)
                     self.entities = self.entities + add_entity
         elif next_shelf_label is not None:
