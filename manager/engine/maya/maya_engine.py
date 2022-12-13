@@ -14,6 +14,11 @@ class MayaEngine(BaseEngine):
         file_name = entity_to_path(file_data)
         cmds.file(file_name, o=True, force=True)
 
+    def reference(self, file_data):
+        file_name = entity_to_path(file_data)
+        cmds.file(file_name, r=True, ignoreVersion=True, namespace=file_data.get("task"))
+
+
     def __str__(self):
         return f"[{__class__.__name__}]"
 

@@ -16,6 +16,11 @@ def get():
 
         importlib.reload(ma)
         return ma.MayaEngine()
+    elif executed_app.find("houdini") != -1:
+        from manager.engine.houdini import houdini_engine as he
+
+        importlib.reload(he)
+        return he.HoudiniEngine()
     else:
         from manager.engine import base_engine as be
         return be.BaseEngine()
