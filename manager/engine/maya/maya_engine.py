@@ -19,9 +19,6 @@ class MayaEngine(BaseEngine):
         cmds.file(file_name, r=True, ignoreVersion=True, namespace=file_data.get("task"))
 
 
-    def __str__(self):
-        return f"[{__class__.__name__}]"
-
 
 if __name__ == '__main__':
     print("ola")

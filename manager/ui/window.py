@@ -124,8 +124,16 @@ class Window(QMainWindow):
         self.shelves.button_clicked(self.sender().objectName(), self.engine)
 
 
-if __name__ == '__main__':
-    app = QtWidgets.QApplication()
+def open_window():
     w = Window()
     w.show()
+
+
+def open_app():
+    app = QtWidgets.QApplication().instance()
+    open_window()
     app.exec_()
+
+
+if __name__ == '__main__':
+    open_app()

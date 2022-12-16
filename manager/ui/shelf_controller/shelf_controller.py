@@ -3,7 +3,6 @@ from PySide2 import QtCore
 from manager import conf
 from manager.core.data_api import data
 from manager.ui.shelf_controller.shelf_widget.shelf_widget import ShelfWidget
-from pprint import pprint
 
 
 class ShelfController:
@@ -61,6 +60,7 @@ class ShelfController:
 
         shelf_label_next = conf.hierarchy_descendant.get(label)
         if shelf_label_next is not None:
+            # todo because recursivity getting data 2 times tofix..
             shelf_widget.list.currentItemChanged.connect(lambda: self.open_next_shelf(shelf_label_next, states,
                                                                                       extensions))
 
@@ -103,6 +103,6 @@ class ShelfController:
             if shelf.label.text() == "scene":
                 file_data = shelf.list.currentItem().data(self.userRole)
 
-                output_function = getattr(type(engine), button_name)
+                output_function = getattr(engine, button_name)
                 output_function(engine, file_data)
 

@@ -12,3 +12,7 @@ class HoudiniEngine(BaseEngine):
     def open(self, file_data):
         file_name = entity_to_path(file_data)
         hou.hipFile.load(file_name)
+
+    def merge(self, file_data):
+        file_name = entity_to_path(file_data)
+        hou.hipFile.merge(file_name)

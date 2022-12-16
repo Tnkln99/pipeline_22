@@ -2,6 +2,7 @@ from shotgun_api3 import shotgun
 from manager.conf.p import private_conf
 from manager import conf
 from pprint import pprint
+from manager.core.decorators import time_calculator_decorator
 
 sg = None
 
@@ -79,6 +80,7 @@ def translate_shot_sg_to_entity(list_entity_sg, project_name):
     return res
 
 
+@time_calculator_decorator
 def get_entities(**kwargs):
     project_name = kwargs.get("project_name")
     type_req = kwargs.get("type_req")
